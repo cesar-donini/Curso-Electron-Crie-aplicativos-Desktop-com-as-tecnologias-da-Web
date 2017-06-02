@@ -33,3 +33,12 @@ botaoPlay.addEventListener('click', () => {
 
     play = !play;
 });
+
+ipcRenderer.on('mudar-curso', (event, nomeCurso) => {
+    curso.textContent = nomeCurso;
+  
+    data.findByCourseName(curso.textContent)
+      .then((dados) => {
+          time.textContent = dados.studyTime;
+      });    
+});

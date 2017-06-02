@@ -43,6 +43,16 @@ module.exports = {
             }).catch((err) => {
                 console.log(`Create database have a error: ${err}`);
             });
+    },
+
+    getCoursesNames() {
+        let files = fs.readdirSync(`${__dirname}/data`);
+
+        let coursesNames = files.map((file) => {
+            return file.substr(0, file.lastIndexOf('.'));
+        });
+
+        return coursesNames;
     }
 
 }
