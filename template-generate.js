@@ -1,30 +1,76 @@
 const data = require('./data');
+const { ipcMain, app } = require('electron');
 
 module.exports = {
 
+    template: null,
+
     generateMenu(windowTemplate) {
-        let template = [
-                { label : 'Cursos' },
-                { type : 'separator' }
-            ];
-        
+        this.template = [
+            { label: 'Cursos' },
+            { type: 'separator' }
+        ];
+
         let cursos = data.getCoursesNames();
 
         cursos.forEach((curso) => {
             let itemMenu = {
-                label : curso,
-                type : 'radio',
-                click : () => {
+                label: curso,
+                type: 'radio',
+                click: () => {
                     windowTemplate.send('mudar-curso', curso);
                 }
             }
 
-            template.push(itemMenu);
+            this.template.push(itemMenu);
         });
 
-        console.log(template);
+        return this.template;
+    },
 
-        return template;
+    addCourse(windowTemplate, course) {
+        this.template.push({
+            label: course,
+            type: 'radio',
+            checked: true,
+            click: () => {
+                windowTemplate.send('mudar-curso', course);
+            }
+        });
+
+        return this.template;
+    },
+
+    generateMainMenu() {
+          let templateMainMenu = [
+            {
+                label: 'View',
+                submenu: [
+                    {role: 'reload'},
+                    {role: 'toggledevtools'}
+                ]
+            },
+            {
+                role: 'window',
+                submenu: [
+                    {role: 'minimize'},
+                    {role: 'close'}
+                ]
+            },
+            {
+                label : 'Sobre',
+                submenu: [
+                    { 
+                        label : 'Sobre' ,
+                        click : () => {
+                            ipcMain.emit('abrir-janela-sobre');
+                        } 
+                    }],
+            }];
+
+            if (process.platform === 'darwin') {
+                templateMainMenu.shift({label : app.getName()});
+            }
+            return templateMainMenu;
     }
-
 }

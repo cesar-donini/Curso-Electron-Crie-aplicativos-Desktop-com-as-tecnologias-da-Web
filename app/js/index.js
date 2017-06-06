@@ -6,6 +6,8 @@ let linkSobre = document.querySelector('#link-sobre');
 let botaoPlay = document.querySelector('.botao-play');
 let time = document.querySelector('.tempo');
 let curso = document.querySelector('.curso');
+let botaoAdicionar = document.querySelector('.botao-adicionar');
+let nomeNovoCurso = document.querySelector('.campo-adicionar');
 
 window.onload = () => {
     data.findByCourseName(curso.textContent)
@@ -41,4 +43,11 @@ ipcRenderer.on('mudar-curso', (event, nomeCurso) => {
       .then((dados) => {
           time.textContent = dados.studyTime;
       });    
+});
+
+botaoAdicionar.addEventListener('click', () => {
+    curso.textContent = nomeNovoCurso.value;
+    time.textContent = '00:00:00';
+    ipcRenderer.send('curso-adicionado', nomeNovoCurso.value);
+    nomeNovoCurso.value = '';
 });

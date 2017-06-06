@@ -3,26 +3,29 @@ const data = require('./data');
 const templateGenerate = require('./template-generate');
 
 let tray;
-
+let mainWindow;
 app.on('ready', () => {
 
-    let mainWindow = new BrowserWindow({
-      width: 600,
-      height: 400
-    });
+  mainWindow = new BrowserWindow({
+    width: 600,
+    height: 400
+  });
 
-    mainWindow.loadURL(`file://${__dirname}/app/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 
-    tray = new Tray(`${__dirname}/app/img/icon-tray.png`);
-    
-    let trayMenu = Menu.buildFromTemplate(templateGenerate.generateMenu(mainWindow));
-    tray.setContextMenu(trayMenu);
+  tray = new Tray(`${__dirname}/app/img/icon-tray.png`);
+
+  let trayMenu = Menu.buildFromTemplate(templateGenerate.generateMenu(mainWindow));
+  tray.setContextMenu(trayMenu);
+
+  let mainMenu = Menu.buildFromTemplate(templateGenerate.generateMainMenu());
+  Menu.setApplicationMenu(mainMenu);
 
 });
 
 
 app.on('window-all-closed', () => {
-    app.quit();
+  app.quit();
 });
 
 let sobreWindow = null;
@@ -53,4 +56,9 @@ ipcMain.on('parar-tempo-curso', (event, curso, tempo) => {
 
   data.saveInDataBase(curso, tempo);
 
+});
+
+ipcMain.on('curso-adicionado', (event, curso) => {
+  let trayMenu = Menu.buildFromTemplate(templateGenerate.addCourse(mainWindow, curso));
+  tray.setContextMenu(trayMenu);
 });
