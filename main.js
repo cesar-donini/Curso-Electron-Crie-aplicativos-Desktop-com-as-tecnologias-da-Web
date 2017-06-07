@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron');
 const data = require('./data');
 const templateGenerate = require('./template-generate');
+const globalShortcutRegister = require('./global-shortcut');
 
 let tray;
 let mainWindow;
@@ -21,6 +22,7 @@ app.on('ready', () => {
   let mainMenu = Menu.buildFromTemplate(templateGenerate.generateMainMenu());
   Menu.setApplicationMenu(mainMenu);
 
+  globalShortcutRegister.registerGlobalsShortcuts(mainWindow);
 });
 
 

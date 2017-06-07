@@ -23,6 +23,7 @@ linkSobre.addEventListener('click', () => {
 
 let imgs = ['img/play-button.svg', 'img/stop-button.svg'];
 let play = false;
+
 botaoPlay.addEventListener('click', () => {
     imgs = imgs.reverse();
     botaoPlay.src = imgs[0];
@@ -50,4 +51,14 @@ botaoAdicionar.addEventListener('click', () => {
     time.textContent = '00:00:00';
     ipcRenderer.send('curso-adicionado', nomeNovoCurso.value);
     nomeNovoCurso.value = '';
+});
+
+ipcRenderer.on('play-stop', () => {
+    let eventClick = new MouseEvent('click');
+    botaoPlay.dispatchEvent(eventClick);
+
+    new Notification('Alura Timer', {
+                            body: `O curso de ${curso.textContent} ${play ? 'iniciado' : 'pausado'}!`,
+                            icon: play ? 'img/play-button.png' : 'img/stop-button.png'
+                        });
 });

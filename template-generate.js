@@ -62,6 +62,7 @@ module.exports = {
                 submenu: [
                     { 
                         label : 'Sobre' ,
+                        accelerator : 'F1',
                         click : () => {
                             ipcMain.emit('abrir-janela-sobre');
                         } 
