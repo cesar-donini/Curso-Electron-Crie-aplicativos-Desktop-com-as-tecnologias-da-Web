@@ -61,6 +61,7 @@ ipcMain.on('parar-tempo-curso', (event, curso, tempo) => {
 });
 
 ipcMain.on('curso-adicionado', (event, curso) => {
+  data.saveInDataBase(curso, '00:00:00');
   let trayMenu = Menu.buildFromTemplate(templateGenerate.addCourse(mainWindow, curso));
   tray.setContextMenu(trayMenu);
 });

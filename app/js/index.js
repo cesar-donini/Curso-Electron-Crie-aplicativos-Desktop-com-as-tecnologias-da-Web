@@ -38,15 +38,24 @@ botaoPlay.addEventListener('click', () => {
 });
 
 ipcRenderer.on('mudar-curso', (event, nomeCurso) => {
+    console.log("teste");
+    if(play) {
+        ipcRenderer.emit('play-stop');
+    }
+    
     curso.textContent = nomeCurso;
-  
+    
     data.findByCourseName(curso.textContent)
       .then((dados) => {
           time.textContent = dados.studyTime;
-      });    
+      });
 });
 
 botaoAdicionar.addEventListener('click', () => {
+
+    if(!nomeNovoCurso.value) {
+        return;
+    }
     curso.textContent = nomeNovoCurso.value;
     time.textContent = '00:00:00';
     ipcRenderer.send('curso-adicionado', nomeNovoCurso.value);

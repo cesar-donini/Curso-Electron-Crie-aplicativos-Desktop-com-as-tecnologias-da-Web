@@ -21,7 +21,7 @@ module.exports = {
                     windowTemplate.send('mudar-curso', curso);
                 }
             }
-
+            console.log(new Date());
             this.template.push(itemMenu);
         });
 
